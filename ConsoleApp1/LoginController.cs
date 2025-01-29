@@ -26,7 +26,7 @@ internal class LoginController
             }
             else
             {
-                Console.WriteLine("error");
+                Console.WriteLine("Error");
                 countfiles++;
                 if (countfiles == 3)
                 {
