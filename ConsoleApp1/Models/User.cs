@@ -8,7 +8,7 @@ namespace ConsoleApp1.Models;
 
 public class User
 {
-    public string Name;
-    public string Password;
-    public string Login;
+    public string Name { get; set; }
+    public string Password { get; set; }
+    public string Login { get; set; }
 }

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp1.Models;
 
 namespace ConsoleApp1;
 
 internal class LoginController
 {
+    private User loginUser;
+
     public void Process()
     {
         int countfiles = 0;
@@ -19,9 +22,10 @@ internal class LoginController
 
             Console.Write("Password: ");
             string password = Console.ReadLine();
-            bool access = CheckLoginPassword(login, password);
-            if (access)
+            var match = CheckLoginPassword(login, password);
+            if (match != null)
             {
+                loginUser = match;
                 break;
             }
             else
@@ -38,20 +42,20 @@ internal class LoginController
 
         }
 
-        Console.WriteLine("Welcome!");
+        Console.WriteLine("Welcome "+ loginUser.Name+"!");
         Console.ReadLine();
     }
 
-    private bool CheckLoginPassword(string login, string password)
+    private User CheckLoginPassword(string login, string password)
     {
         foreach(var item in DataBase.Users)
         {
             if (item.Password == password && item.Login == login)
             {
-                return true;
+                return item;
             }
         }
-        return false;
+        return null;
     }
 }
 

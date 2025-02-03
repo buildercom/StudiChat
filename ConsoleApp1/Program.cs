@@ -6,6 +6,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        DataBase.Init();
         while (true)
         {
             Console.WriteLine("Введите команду:");

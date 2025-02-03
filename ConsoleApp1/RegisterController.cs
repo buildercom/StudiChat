@@ -36,10 +36,12 @@ internal class RegisterController
         user.Login = userLogin;
 
         DataBase.Users.Add(user);
+        DataBase.Save();
+        
         Console.WriteLine("Спасибо за регистрацию!");
 
     }
-
+    
     private bool CheckLoginFree(string login)
     {
         foreach (var user in DataBase.Users)
@@ -48,9 +50,7 @@ internal class RegisterController
             {
                 return false;
             }
-           
         }
         return true;
-
     }
 }
