@@ -15,7 +15,14 @@ internal class Program
             {
                 case "login":
                     var loginController = new LoginController();
-                    loginController.Process();
+                    bool logined = loginController.Process();
+                    if (logined == true)
+                    {
+                        var chat = new Chat(loginController.loginUser);
+                        chat.Process();
+                        
+                        
+                    }
                     break;
                 case "register":
                     var regController = new RegisterController();

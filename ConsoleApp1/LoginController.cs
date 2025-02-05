@@ -9,9 +9,9 @@ namespace ConsoleApp1;
 
 internal class LoginController
 {
-    private User loginUser;
+    public User loginUser;
 
-    public void Process()
+    public bool Process()
     {
         int countfiles = 0;
         while (true)
@@ -36,14 +36,16 @@ internal class LoginController
                 {
                     Console.WriteLine("you hacker");
                     Console.ReadLine();
-                    return;
+                    return false;
                 }
             }
 
         }
 
+
         Console.WriteLine("Welcome "+ loginUser.Name+"!");
-        Console.ReadLine();
+
+        return true;
     }
 
     private User CheckLoginPassword(string login, string password)

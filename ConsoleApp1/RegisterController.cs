@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleApp1.Models;
@@ -34,6 +35,7 @@ internal class RegisterController
         user.Name = name;
         user.Password = password;
         user.Login = userLogin;
+        user.Id = DataBase.Users.Count + 1;
 
         DataBase.Users.Add(user);
         DataBase.Save();
