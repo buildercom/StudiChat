@@ -18,7 +18,9 @@ public class Chat
     public Chat(User user)
     {
         loginedUser = user;
-        client = new UdpClient(1235);
+        var rand = new Random();
+        int port = rand.Next(1000, 9000);
+        client = new UdpClient(port);
     }
 
     public void Process()
@@ -56,8 +58,6 @@ public class Chat
 
     private void Engine()
     {
-        //var ip = IPEndPoint.Parse("127.0.0.1");
-        //var ip = new IPEndPoint();
         var ip = new IPEndPoint(IPAddress.Any, 0);
 
         while (true)
@@ -68,7 +68,7 @@ public class Chat
 
             string authorName = jsonFrame.AuthorName;
             
-            Console.WriteLine("Пользователь "+ authorName+":"+ jsonFrame.Message);
+            Console.WriteLine(authorName+": "+ jsonFrame.Message);
         }
     }
 

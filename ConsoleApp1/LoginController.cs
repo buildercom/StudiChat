@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ConsoleApp1.Models;
+using ConsoleApp1.Models.Dto;
 
 namespace ConsoleApp1;
 
@@ -30,7 +32,6 @@ internal class LoginController
             }
             else
             {
-                Console.WriteLine("Error");
                 countfiles++;
                 if (countfiles == 3)
                 {
@@ -43,21 +44,42 @@ internal class LoginController
         }
 
 
-        Console.WriteLine("Welcome "+ loginUser.Name+"!");
-
+        Console.WriteLine("Welcome " + loginUser.Name + "!");
         return true;
     }
 
     private User CheckLoginPassword(string login, string password)
     {
-        foreach(var item in DataBase.Users)
+        var client = new HttpClient();
+        var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5227/login");
+        var requestModel = new
         {
-            if (item.Password == password && item.Login == login)
+            Login = login,
+            Password = password,
+        };
+        string json = JsonSerializer.Serialize(requestModel);
+
+        var content = new StringContent(json, null, "application/json");
+        request.Content = content;
+        var response = client.Send(request);
+
+        string responseJson = response.Content.ReadAsStringAsync().Result;
+        var result = JsonSerializer.Deserialize<LoginResponce>(responseJson);
+        if (result.Success == true)
+        {
+            return new User
             {
-                return item;
-            }
+                Id = result.Result.Id,
+                Name = result.Result.Name,
+                Password = password,
+                Login = login,
+            };
         }
-        return null;
+        else
+        {
+            Console.WriteLine(result.Description);
+            return null;
+        }
     }
 }
 
