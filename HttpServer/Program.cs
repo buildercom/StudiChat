@@ -4,6 +4,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        SQLitePCL.Batteries.Init();
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.

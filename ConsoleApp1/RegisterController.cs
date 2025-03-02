@@ -20,13 +20,6 @@ internal class RegisterController
         Console.WriteLine("Придумайте логин:");
         string userLogin = Console.ReadLine();
 
-        bool isFree = CheckLoginFree(userLogin);
-        if (isFree == false)
-        {
-            Console.WriteLine("Такой логин уже существует!");
-            return;
-        }
-
         Console.WriteLine("Придумайте пароль:");
         string password = Console.ReadLine();
 
@@ -70,17 +63,5 @@ internal class RegisterController
             Console.WriteLine(result.Description);
             return null;
         }
-    }
-
-    private bool CheckLoginFree(string login)
-    {
-        foreach (var user in DataBase.Users)
-        {
-            if (user.Login == login)
-            {
-                return false;
-            }
-        }
-        return true;
     }
 }

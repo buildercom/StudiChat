@@ -24,7 +24,7 @@ internal class LoginController
 
             Console.Write("Password: ");
             string password = Console.ReadLine();
-            var match = CheckLoginPassword(login, password);
+            var match = Authorization(login, password);
             if (match != null)
             {
                 loginUser = match;
@@ -48,7 +48,7 @@ internal class LoginController
         return true;
     }
 
-    private User CheckLoginPassword(string login, string password)
+    private User Authorization(string login, string password)
     {
         var client = new HttpClient();
         var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5227/login");
