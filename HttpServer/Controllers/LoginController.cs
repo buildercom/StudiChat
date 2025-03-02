@@ -19,20 +19,7 @@ public class LoginController : ControllerBase
     [HttpPost]
     public LoginResult Login(LoginRequest req)
     {
-        using var connection = new SqliteConnection("Data Source=data.db");
-        connection.Open();
-        using var table = connection.CreateCommand();
-        table.CommandText =
-"""
-CREATE TABLE IF NOT EXISTS "registred_users" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"login"	TEXT NOT NULL UNIQUE,
-	"password"	TEXT NOT NULL,
-	"name"	TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-""";
-        table.ExecuteNonQuery();
+        using var connection = InitDataBase();
 
         using var checkLoginCmd = connection.CreateCommand();
         checkLoginCmd.CommandText =
@@ -67,20 +54,7 @@ SELECT id, name FROM registred_users WHERE login = '{req.Login}' AND password = 
     [Route("register")]
     public RegisterResult Register(RegisterRequest req)
     {
-        using var connection = new SqliteConnection("Data Source=data.db");
-        connection.Open();
-        using var table = connection.CreateCommand();
-        table.CommandText =
-"""
-CREATE TABLE IF NOT EXISTS "registred_users" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"login"	TEXT NOT NULL UNIQUE,
-	"password"	TEXT NOT NULL,
-	"name"	TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-""";
-        table.ExecuteNonQuery();
+        using var connection = InitDataBase();
         
         using var checkLoginCmd = connection.CreateCommand();
         checkLoginCmd.CommandText =
@@ -120,4 +94,33 @@ RETURNING id
 
     }
 
+    private SqliteConnection InitDataBase()
+    {
+        string dirPlace = Environment.ProcessPath;
+        string result = "";
+        for (int i = dirPlace.Length - 1; i>=0; i--)
+        {
+            char c = dirPlace[i];
+            if (c == '\\')
+            {
+                result = dirPlace.Substring(0, i);
+                break;
+            }
+        }
+        var connection = new SqliteConnection($"Data Source={result}\\data.db");
+        connection.Open();
+        using var table = connection.CreateCommand();
+        table.CommandText =
+"""
+CREATE TABLE IF NOT EXISTS "registred_users" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"login"	TEXT NOT NULL UNIQUE,
+	"password"	TEXT NOT NULL,
+	"name"	TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+""";
+        table.ExecuteNonQuery();
+        return connection;
+    }
 }
